@@ -101,3 +101,35 @@ vagas.map(vaga => vaga.requisitos).forEach(requisitos => {
     });
 });
 
+// RF09 - Criar classe
+class vaga {
+    constructor(empresa, cargo, salario){
+        this.empresa = empresa;
+        this.cargo = cargo;
+        this.salario = salario;
+    }
+    exibirResumo(){
+        return `vaga: ${this.cargo} na empresa ${this.empresa} com salário de R$${this.salario}`;
+    }
+}
+
+class vagaFrontEnd extends vaga {
+    constructor(empresa, cargo, salario, nivel){
+        super(empresa, cargo, salario); 
+        this.nivel=nivel
+    }
+    exibiNivel(){
+        return `Nível da vaga: ${this.nivel}`;
+    }     
+}
+const vaga1 = new vagaFrontEnd("DevHouse","Desenvovedor Front-End", 3500, "Júnior");
+
+//RF12 - callback
+function finalizarAnalise(nomeCandidato, callback) {
+    console.log("\nanálise técnica do SkillMatch finalizada com sucesso.");
+    callback(nomeCandidato);
+}
+function exibirMensagemFinal(nome){
+    console.log(`[Sistema]:, ${nome}, revise suas habilidades faltantes!`);
+    
+}
