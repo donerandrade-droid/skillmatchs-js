@@ -73,4 +73,31 @@ if (compatibilidade >= 80) {
     console.log(`Classificação: ${classificacao}`);
     console.log("---");
 }
+// RF06 - Vaga com maior compatibilidade
+function calcularCompatibilidade(vaga) {
+    const atendidos = vaga.requisitos.filter(req =>
+        candidato.habilidades.includes(req)
+    ).length;
+    return Math.round((atendidos / vaga.requisitos.length) * 100);
+}
+
+const vagaMaisCompativel = vagas.reduce((melhor, vagaAtual) => {
+    const percentualAtual = calcularCompatibilidade(vagaAtual);
+    const percentualMelhor = calcularCompatibilidade(melhor);
+    return percentualAtual > percentualMelhor ? vagaAtual : melhor;
+});
+
+const melhorPercentual = calcularCompatibilidade(vagaMaisCompativel);
+
+// RF07 - Recomendação de estudo
+
+const habilidadesFaltantes = [];
+
+vagas.map(vaga => vaga.requisitos).forEach(requisitos => {
+    requisitos.forEach(req => {
+        if (!candidato.habilidades.includes(req) && !habilidadesFaltantes.includes(req)) {
+            habilidadesFaltantes.push(req);
+        }
+    });
+});
 
