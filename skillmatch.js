@@ -116,13 +116,24 @@ class vaga {
 class vagaFrontEnd extends vaga {
     constructor(empresa, cargo, salario, nivel){
         super(empresa, cargo, salario); 
-        this.nivel=nivel
+        this.nivel = nivel;
     }
-    exibiNivel(){
-        return `Nível da vaga: ${this.nivel}`;
+    exibirNivel(){
+        return `Nível: ${this.nivel}`;
     }     
 }
 const vaga1 = new vagaFrontEnd("DevHouse","Desenvovedor Front-End", 3500, "Júnior");
+
+// RF13 - Closure
+function criarContadorDeAnalises() {
+    let total = 0; // essa variável fica "presa" dentro da função
+    return function() {
+        total++; // a cada chamada, soma 1 no total guardado
+        return total;
+    };
+}
+
+const contador = criarContadorDeAnalises();
 
 //RF12 - callback
 function finalizarAnalise(nomeCandidato, callback) {
@@ -131,5 +142,48 @@ function finalizarAnalise(nomeCandidato, callback) {
 }
 function exibirMensagemFinal(nome){
     console.log(`[Sistema]:, ${nome}, revise suas habilidades faltantes!`);
-    
+  
 }
+// RF14 - Promise e async/await
+function buscarVagasSimuladas() {
+    return new Promise((resolve) => {
+        console.log("Conectando ao servidor de vagas...");
+        setTimeout(() => {
+            resolve(vagas);
+        }, 2000); // simula um atraso de 2 segundos 
+    });
+}
+
+async function iniciarSistema() {
+    console.log("=== INICIANDO SISTEMA SKILLMATCH ===");
+
+    const vagasCarregadas = await buscarVagasSimuladas();
+    console.log("Vagas carregadas com sucesso!\n");
+
+    console.log("=== Vaga mais compatível ===");
+    console.log(`Empresa: ${vagaMaisCompativel.empresa}`);
+    console.log(`Cargo: ${vagaMaisCompativel.cargo}`);
+    console.log(`Compatibilidade: ${melhorPercentual}%`);
+    console.log("---");
+
+    vagasCarregadas.forEach(vaga => {
+        analisarVaga(vaga);
+        contador();
+    });
+
+    console.log("\n=== Recomendação de estudo ===");
+    console.log(`Priorize estudar: ${habilidadesFaltantes.join(", ")}`);
+
+    console.log("\n=== Teste de Classe ===");
+    console.log(vaga1.exibirResumo());
+    console.log(vaga1.exibirNivel());
+
+    const totalAnalisadas = contador() - 1;
+    console.log(`\nTotal de vagas analisadas pelo motor: ${totalAnalisadas}`);
+
+    
+    finalizarAnalise(candidato.nome, exibirMensagemFinal);
+}
+
+// inicia todo o sistema
+iniciarSistema();
